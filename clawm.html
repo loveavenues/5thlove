@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lover Letter Claw Machine</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #111 0%, #333 50%, #555 100%);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .machine {
+      width: 90%;
+      max-width: 360px;
+      height: 540px;
+      background: #222;
+      border: 6px solid #555;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .glass {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border-bottom: 4px solid #444;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reflection {
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+      animation: shine 4s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -50%; }
+      50% { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    .claw-track {
+      width: 100%;
+      height: 40px;
+      background: #333;
+      border-bottom: 3px solid #555;
+      position: relative;
+      z-index: 2;
+    }
+
+    .claw {
+      width: 40px;
+      height: 80px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: left 0.5s ease;
+      z-index: 3;
+    }
+
+    .cable {
+      width: 4px;
+      height: 40px;
+      background: #666;
+      margin: 0 auto;
+    }
+
+    .prongs {
+      width: 40px;
+      height: 40px;
+      position: relative;
+    }
+
+    .prong {
+      width: 6px;
+      height: 30px;
+      background: #aaa;
+      position: absolute;
+      bottom: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .prong.left { left: 4px; transform-origin: top right; }
+    .prong.right { right: 4px; transform-origin: top left; }
+
+    .claw.closed .prong.left { transform: rotate(20deg); }
+    .claw.closed .prong.right { transform: rotate(-20deg); }
+
+    /* Envelope styling */
+    .envelope {
+      width: 50px;
+      height: 35px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      position: absolute;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 20px solid #eee;
+    }
+
+    .heart {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.5);
+      color: red;
+      font-size: 16px;
+    }
+
+    .controls {
+      width: 100%;
+      height: 15%;
+      background: #111;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #444;
+      border: 3px solid #888;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.7);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.9);
+    }
+
+    .bottom-bar {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border-top: 3px solid #777;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    .collection-box {
+      flex: 1;
+      height: 60px;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid #777;
+      border-radius: 6px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .back-btn {
+      margin-left: 8px;
+      padding: 8px 12px;
+      background: #ff5c5c;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 300px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .close-btn {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #ff5c5c;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="machine">
+    <div class="glass">
+      <div class="reflection"></div>
+      <div class="claw-track"></div>
+      <div class="claw" id="claw">
+        <div class="cable"></div>
+        <div class="prongs">
+          <div class="prong left"></div>
+          <div class="prong right"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="leftBtn">◀</button>
+      <button class="btn" id="grabBtn">⬇</button>
+      <button class="btn" id="rightBtn">▶</button>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="collection-box" id="collectionBox"></div>
+      <button class="back-btn" onclick="window.location.href='index.html'">Back</button>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>💌 Lover Letter 💌</h2>
+      <p id="letterMessage">You caught a lover letter!</p>
+      <button class="close-btn" id="closePopup">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const claw = document.getElementById("claw");
+    const grabBtn = document.getElementById("grabBtn");
+    const leftBtn = document.getElementById("leftBtn");
+    const rightBtn = document.getElementById("rightBtn");
+    const popup = document.getElementById("popup");
+    const closePopup = document.getElementById("closePopup");
+    const collectionBox = document.getElementById("collectionBox");
+    const glass = document.querySelector(".glass");
+    const letterMessage = document.getElementById("letterMessage");
+
+    let clawX = 150; 
+    claw.style.left = clawX + "px";
+    let hasGrabbed = false;
+
+    const messages = [
+      "You are my sunshine on cloudy days.",
+      "Every moment with you feels magical.",
+      "You make my heart skip a beat.",
+      "Forever is better with you.",
+      "I love you more every single day.",
+      "You complete my world.",
+      "You are my sweetest adventure.",
+      "My love for you is endless.",
+      "Your smile is my favorite sight.",
+      "I’m grateful for your love."
+    ];
+
+    const envelopes = [];
+    for (let i = 0; i < 20; i++) {
+      const env = document.createElement("div");
+      env.classList.add("envelope");
+      env.style.left = (Math.random() * 260) + "px";
+      env.style.top = (Math.random() * 150 + 230) + "px";
+      env.style.transform = `rotate(${(Math.random() * 30 - 15)}deg)`;
+      env.dataset.message = messages[i % messages.length];
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤";
+      env.appendChild(heart);
+      glass.appendChild(env);
+      envelopes.push(env);
+    }
+
+    leftBtn.addEventListener("click", () => {
+      clawX = Math.max(20, clawX - 20);
+      claw.style.left = clawX + "px";
+    });
+
+    rightBtn.addEventListener("click", () => {
+      clawX = Math.min(280, clawX + 20);
+      claw.style.left = clawX + "px";
+    });
+
+    grabBtn.addEventListener("click", () => {
+      if (hasGrabbed) return;
+      hasGrabbed = true;
+
+      claw.classList.add("closed");
+
+      const down = claw.animate([{ top: "0px" }, { top: "260px" }], { duration: 800, fill: "forwards" });
+
+      down.onfinish = () => {
+        const clawCenter = clawX + 20;
+        let caughtEnv = null;
+        let minDist = Infinity;
+
+        envelopes.forEach(env => {
+          const envCenter = env.offsetLeft + env.offsetWidth / 2;
+          const dist = Math.abs(clawCenter - envCenter);
+          if (dist < 35 && dist < minDist) {
+            minDist = dist;
+            caughtEnv = env;
+          }
+        });
+
+        if (caughtEnv) {
+          // Attach envelope to claw
+          caughtEnv.style.transition = "top 0.8s, left 0.8s";
+          caughtEnv.style.top = "260px";
+          caughtEnv.style.left = clawX + "px";
+
+          const up = claw.animate([{ top: "260px" }, { top: "0px" }], { duration: 800, fill: "forwards" });
+
+          up.onfinish = () => {
+            claw.classList.remove("closed");
+
+            // Move envelope with claw up
+            caughtEnv.style.top = "40px";
+            caughtEnv.style.left = clawX + "px";
+
+            setTimeout(() => {
+              // remove from glass, show in collection box
+              glass.removeChild(caughtEnv);
+              letterMessage.textContent = caughtEnv.dataset.message;
+              collectionBox.innerHTML = "";
+              const collected = document.createElement("div");
+              collected.classList.add("envelope");
+              const heart = document.createElement("div");
+              heart.classList.add("heart");
+              heart.innerHTML = "❤";
+              collected.appendChild(heart);
+
+              collected.addEventListener("click", () => {
+                popup.classList.add("show");
+              });
+
+              collectionBox.appendChild(collected);
+              popup.classList.add("show");
+            }, 800);
+
+            clawX = 150;
+            claw.style.left = clawX + "px";
+            hasGrabbed = false;
+          };
+        } else {
+          // no envelope caught
+          const up = claw.animate([{ top: "260px" }, { top: "0px" }], { duration: 800, fill: "forwards" });
+          up.onfinish = () => {
+            claw.classList.remove("closed");
+            clawX = 150;
+            claw.style.left = clawX + "px";
+            hasGrabbed = false;
+          };
+        }
+      };
+    });
+
+    closePopup.addEventListener("click", () => {
+      popup.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
