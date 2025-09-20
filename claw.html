@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kawaii Claw Machine</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #111 0%, #333 50%, #555 100%);
+            font-family: 'Poppins', 'Segoe UI', 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+          }
+
+        @media (max-width: 1024px) {
+            body {
+                padding: 0;
+                align-items: center;
+                min-height: 100vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: center;
+                min-height: 100vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+                align-items: center;
+                min-height: 100vh;
+            }
+        }
+
+        .machine-container {
+            background: linear-gradient(145deg, #2c2c2c, #3a3a3a);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            border: 12px solid #000;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 800px;
+            display: flex;
+            flex-direction: column;
+          }
+
+        @media (max-width: 1024px) {
+            .machine-container {
+                max-width: 95vw;
+                height: 95vh;
+                border: 6px solid #1a252f;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .machine-container {
+                max-width: 98vw;
+                height: 98vh;
+                border: 4px solid #1a252f;
+                padding: 8px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .machine-container {
+                max-width: 99vw;
+                height: 99vh;
+                border: 3px solid #1a252f;
+                border-radius: 12px;
+                padding: 6px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .machine-container {
+                height: 99vh;
+                border: 2px solid #1a252f;
+                border-radius: 10px;
+                padding: 4px;
+            }
+        }
+
+        .machine-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #fff, #aaa, #000);
+            border-radius: 35px;
+            z-index: -1;
+            opacity: 0.2;
+          }
+      
+          .machine-top {
+            background: linear-gradient(145deg, #444, #111);
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+            margin: 0 0 15px 0;
+            text-align: center;
+            border: 4px solid #000;
+            border-bottom: 6px solid #000;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+          }
+
+        .machine-top::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255,255,255,0.1) 0px,
+                rgba(255,255,255,0.1) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            opacity: 0.3;
+        }
+
+        .machine-title {
+            color: #fff;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            margin: 0;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+          }
+
+        @media (max-width: 768px) {
+            .machine-title {
+                font-size: 1.8rem;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .machine-title {
+                font-size: 1.4rem;
+                letter-spacing: 0px;
+            }
+        }
+
+        .game-area {
+            position: relative;
+            width: calc(100% - 40px);
+            height: 400px;
+            background: linear-gradient(to bottom, #f5f5f5 0%, #e0e0e0 50%, #ccc 100%);
+            border: 12px solid #000;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px;
+            flex-shrink: 0;
+          }
+
+        @media (max-width: 1024px) {
+            .game-area {
+                width: calc(100% - 20px);
+                height: 55vh;
+                border: 6px solid #000;
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                width: calc(100% - 16px);
+                height: 60vh;
+                border: 4px solid #1a252f;
+                margin: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-area {
+                width: calc(100% - 12px);
+                height: 65vh;
+                border: 3px solid #1a252f;
+                margin: 6px;
+                border-radius: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .game-area {
+                width: calc(100% - 8px);
+                height: 68vh;
+                border: 2px solid #1a252f;
+                margin: 4px;
+                border-radius: 6px;
+            }
+        }
+
+        .glass-reflection {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 30%),
+                linear-gradient(45deg, transparent 60%, rgba(255,255,255,0.2) 70%, transparent 80%),
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%);
+            border-radius: 15px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                radial-gradient(2px 2px at 40px 70px, #ffb3d9, transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, #ff69b4, transparent),
+                radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 3s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .claw-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
+            background: linear-gradient(to right, #555, #333, #555);
+            border-bottom: 3px solid #fff;
+            border-radius: 15px 15px 0 0;
+          }
+
+        .claw-container {
+            position: absolute;
+            top: 0px;
+            left: 250px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .claw-motor {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 12px;
+            background: linear-gradient(145deg, #888, #444);
+            border-radius: 10px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+          }
+
+        .claw-cable {
+            width: 3px;
+            height: 120px;
+            background: linear-gradient(to bottom, #888, #555);
+            margin: 0 auto;
+            position: relative;
+            border-radius: 2px;
+            box-shadow: inset 1px 0 2px rgba(255,255,255,0.3);
+        }
+
+        .claw {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 30px;
+        }
+
+        .claw svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .claw.grabbing .claw-left {
+            transform: rotate(-25deg);
+        }
+
+        .claw.grabbing .claw-right {
+            transform: rotate(25deg);
+        }
+
+        .prize {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 4px solid #fff;
+            box-shadow: 0 6px 12px rgba(255,182,193,0.3);
+        }
+
+        .prize:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .prize.grabbed {
+            z-index: 5;
+        }
+
+        .controls {
+            margin: 15px 0 0 0;
+            text-align: center;
+            background: linear-gradient(145deg, #2b2b2b, #1a1a1a);
+            padding: 25px;
+            border-radius: 0 0 15px 15px;
+            border: 4px solid #000;
+            border-top: 8px solid #444;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.6);
+            flex-shrink: 0;
+          }
+
+        .control-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(145deg, #555, #222);
+            border: 3px solid #000;
+            padding: 10px 14px;
+            margin: 4px;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 0 #111, 0 8px 12px rgba(0,0,0,0.6);
+          }
+      
+          .control-btn:hover {
+            background: linear-gradient(145deg, #666, #333);
+          }
+
+        @media (max-width: 1024px) {
+            .controls {
+                margin: 0 10px 10px 10px;
+                padding: 12px;
+                border: 3px solid #1a252f;
+                border-top: 4px solid #2e2e2e;
+            }
+
+            .control-row {
+                gap: 12px;
+            }
+
+            .control-btn {
+                padding: 10px 16px;
+                margin: 3px;
+                font-size: 0.9rem;
+                min-width: 50px;
+                min-height: 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                margin: 0 8px 8px 8px;
+                padding: 10px;
+                border: 2px solid #1a252f;
+                border-top: 3px solid #ff69b4;
+            }
+
+            .control-row {
+                gap: 10px;
+            }
+
+            .control-btn {
+                padding: 12px 18px;
+                margin: 2px;
+                font-size: 0.95rem;
+                min-width: 55px;
+                min-height: 55px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .controls {
+                margin: 0 6px 6px 6px;
+                padding: 8px;
+                border: 2px solid #1c1c1c;
+                border-top: 3px solid #9f9f9f;
+            }
+
+            .control-row {
+                gap: 8px;
+                justify-content: space-around;
+            }
+
+            .control-btn {
+                padding: 14px 16px;
+                margin: 1px;
+                font-size: 1rem;
+                min-width: 60px;
+                min-height: 60px;
+                flex: 1;
+                max-width: 90px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .controls {
+                margin: 0 4px 4px 4px;
+                padding: 6px;
+                border: 2px solid #1a252f;
+                border-top: 2px solid #bababa;
+            }
+
+            .control-row {
+                gap: 6px;
+            }
+
+            .control-btn {
+                padding: 12px 14px;
+                margin: 1px;
+                font-size: 0.9rem;
+                min-width: 50px;
+                min-height: 50px;
+            }
+        }
+
+        .control-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #9f9f9f, 0 5px 8px rgba(0,0,0,0.4);
+        }
+
+        .grab-btn {
+            background: linear-gradient(145deg, #eee, #aaa) !important;
+            color: #000 !important;
+            font-size: 1rem !important;
+            padding: 12px 18px !important;
+            border-radius: 12px;
+          }
+
+        .grab-btn:hover {
+            background: linear-gradient(145deg, #a1a09c, #c6c6c6) !important;
+            box-shadow: 0 10px 0 #8d8a82, 0 15px 30px rgba(0,0,0,0.6) !important;
+        }
+
+        .grab-btn:active {
+            transform: translateY(4px) !important;
+            box-shadow: 0 4px 0 #b5b3ae, 0 8px 15px rgba(0,0,0,0.5) !important;
+        }
+
+        @media (max-width: 1024px) {
+            .grab-btn {
+                font-size: 1.1rem !important;
+                padding: 12px 18px !important;
+                min-width: 60px !important;
+                min-height: 60px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grab-btn {
+                font-size: 1.15rem !important;
+                padding: 14px 20px !important;
+                min-width: 65px !important;
+                min-height: 65px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grab-btn {
+                font-size: 1.2rem !important;
+                padding: 16px 18px !important;
+                min-width: 70px !important;
+                min-height: 70px !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .grab-btn {
+                font-size: 1.1rem !important;
+                padding: 14px 16px !important;
+                min-width: 60px !important;
+                min-height: 60px !important;
+            }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 20px rgba(105, 102, 104, 0.5); }
+            50% { box-shadow: 0 12px 30px rgba(82, 81, 82, 0.8); }
+            100% { box-shadow: 0 8px 20px rgba(177, 176, 177, 0.5); }
+        }
+
+        .instructions {
+            color: #fff;
+            text-align: center;
+            margin: 15px 0 10px 0;
+            font-size: 0.9rem;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #1a252f;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .score {
+            background: linear-gradient(145deg, #707973, #2ecc71);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 10px 0 0 0;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 4px solid #1a252f;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .instructions {
+                font-size: 0.8rem;
+                padding: 6px;
+                margin: 0 10px 4px 10px;
+                border: 2px solid #1a252f;
+            }
+
+            .score {
+                font-size: 1rem;
+                padding: 6px 10px;
+                margin: 0 10px 10px 10px;
+                border: 2px solid #1a252f;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .instructions {
+                font-size: 0.75rem;
+                padding: 5px;
+                margin: 0 8px 3px 8px;
+                border: 2px solid #1a252f;
+            }
+
+            .score {
+                font-size: 0.95rem;
+                padding: 5px 8px;
+                margin: 0 8px 8px 8px;
+                border: 2px solid #1a252f;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .instructions {
+                font-size: 0.7rem;
+                padding: 4px;
+                margin: 0 6px 2px 6px;
+                border: 1px solid #1a252f;
+            }
+
+            .score {
+                font-size: 0.9rem;
+                padding: 4px 6px;
+                margin: 0 6px 6px 6px;
+                border: 2px solid #1a252f;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .instructions {
+                font-size: 0.65rem;
+                padding: 3px;
+                margin: 0 4px 2px 4px;
+                border: 1px solid #1a252f;
+            }
+
+            .score {
+                font-size: 0.85rem;
+                padding: 3px 5px;
+                margin: 0 4px 4px 4px;
+                border: 1px solid #1a252f;
+            }
+        }
+
+        .prize-collection {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            height: 65px;
+            background: linear-gradient(145deg, #a9a9a9, #908d8f);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            overflow-x: auto;
+            border: 3px solid #171717;
+            box-shadow: inset 0 2px 10px rgba(181, 181, 181, 0.3), 
+                        0 4px 15px rgba(212, 210, 210, 0.4);
+        }
+        .collected-prize {
+            width: 60px;   /* was 45px */
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 3px solid #fff;
+            flex-shrink: 0;
+            background: linear-gradient(145deg, #ffb6c1, #ff8fab);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        .collected-prize:hover {
+            transform: scale(1.2) rotate(10deg);
+            box-shadow: 0 6px 15px rgba(67, 67, 67, 0.6);
+            border-color: #383637;
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.3) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .message-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #fff, #ffeef8);
+            border: 6px solid #7b7b7b;
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 90vw;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(255,105,180,0.4);
+            z-index: 1000;
+            animation: popIn 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .message-popup {
+                width: 85vw;
+                max-width: 350px;
+                padding: 25px;
+                border: 4px solid #7b7b7b;
+                border-radius: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message-popup {
+                width: 90vw;
+                max-width: 300px;
+                padding: 20px;
+                border: 3px solid #7b7b7b;
+                border-radius: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .message-popup {
+                width: 95vw;
+                max-width: 280px;
+                padding: 15px;
+                border: 3px solid #ff69b4;
+                border-radius: 12px;
+            }
+        }
+
+        .message-popup.hidden {
+            display: none;
+        }
+
+        .message-text {
+            font-size: 1.3rem;
+            color: #8e44ad;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(255,182,193,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .message-text {
+                font-size: 1.2rem;
+                margin-bottom: 18px;
+                line-height: 1.5;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message-text {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+                line-height: 1.4;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .message-text {
+                font-size: 1rem;
+                margin-bottom: 12px;
+                line-height: 1.3;
+            }
+        }
+
+        .close-btn {
+            background: linear-gradient(145deg, #7a7a7a, #636262);
+            border: 3px solid #fff;
+            padding: 12px 30px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(255,105,180,0.4);
+        }
+
+        .close-btn:hover {
+            background: linear-gradient(145deg, #e8e6e7, #acacac);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-180deg); }
+            50% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(142, 68, 173, 0.3);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+
+        .overlay.hidden {
+            display: none;
+        }
+
+        .back-btn-container {
+            text-align: center;
+            margin: 15px 0;
+          }
+          
+          .back-btn {
+            background: linear-gradient(145deg, #444, #111);
+            border: 2px solid #fff;
+            padding: 12px 30px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+          }
+          
+          .back-btn:hover {
+            background: linear-gradient(145deg, #666, #222);
+            transform: translateY(-2px) scale(1.05);
+          }
+    </style>
+</head>
+<body>
+    <div class="machine-container">
+        <div class="machine-top">
+            <h1 class="machine-title">LOVE LETTER MACHINE</h1>
+        </div>
+        
+        <div class="game-area">
+            <div class="glass-reflection"></div>
+            <div class="sparkles"></div>
+            <div class="claw-track"></div>
+            <div class="claw-container" id="clawContainer">
+                <div class="claw-motor"></div>
+                <div class="claw-cable"></div>
+                <div class="claw" id="claw">
+                    <svg viewBox="0 0 50 30" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="clawGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#d2d2d2;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#434343;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Center hub -->
+                        <circle cx="25" cy="8" r="6" fill="url(#clawGradient)" stroke="#fff" stroke-width="2"/>
+                        <!-- Left claw arm -->
+                        <path class="claw-left" d="M19 8 L15 25 Q15 28 18 28 Q21 28 21 25 L25 8" 
+                              fill="url(#clawGradient)" stroke="#fff" stroke-width="2" 
+                              style="transform-origin: 25px 8px; transition: transform 0.3s ease;"/>
+                        <!-- Right claw arm -->
+                        <path class="claw-right" d="M31 8 L35 25 Q35 28 32 28 Q29 28 29 25 L25 8" 
+                              fill="url(#clawGradient)" stroke="#fff" stroke-width="2" 
+                              style="transform-origin: 25px 8px; transition: transform 0.3s ease;"/>
+                        <!-- Cute face on center -->
+                        <circle cx="23" cy="6" r="1" fill="#fff"/>
+                        <circle cx="27" cy="6" r="1" fill="#fff"/>
+                        <path d="M22 10 Q25 12 28 10" stroke="#fff" stroke-width="1" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Cute envelope letters scattered around -->
+            <div class="prize envelope" data-message="You're absolutely amazing! Keep shining bright! ✨" style="background: linear-gradient(145deg, #ffb3d9, #ff69b4); bottom: 100px; left: 10%;">💌</div>
+            <div class="prize envelope" data-message="Today is going to be a wonderful day! Believe in yourself! 🌟" style="background: linear-gradient(145deg, #b3e5fc, #81d4fa); bottom: 140px; left: 25%;">💌</div>
+            <div class="prize envelope" data-message="You have the power to make your dreams come true! 💫" style="background: linear-gradient(145deg, #fff9c4, #fff176); bottom: 110px; left: 45%;">💌</div>
+            <div class="prize envelope" data-message="Your kindness makes the world a better place! 💖" style="background: linear-gradient(145deg, #e1bee7, #ce93d8); bottom: 130px; left: 65%;">💌</div>
+            <div class="prize envelope" data-message="You're stronger than you know and braver than you feel! 🦋" style="background: linear-gradient(145deg, #ffcc80, #ffb74d); bottom: 105px; left: 80%;">💌</div>
+            <div class="prize envelope" data-message="Every small step you take is progress worth celebrating! 🎉" style="background: linear-gradient(145deg, #f8bbd9, #f48fb1); bottom: 150px; left: 15%;">💌</div>
+            <div class="prize envelope" data-message="You bring joy to everyone around you! Keep being you! 🌈" style="background: linear-gradient(145deg, #c8e6c9, #a5d6a7); bottom: 115px; left: 55%;">💌</div>
+            <div class="prize envelope" data-message="Your smile can light up the darkest room! 😊" style="background: linear-gradient(145deg, #ffe0b2, #ffcc02); bottom: 135px; left: 75%;">💌</div>
+            <div class="prize envelope" data-message="You're capable of incredible things! Never give up! 🚀" style="background: linear-gradient(145deg, #ffcdd2, #f8bbd9); bottom: 125px; left: 35%;">💌</div>
+            <div class="prize envelope" data-message="The world is lucky to have someone as special as you! 🌸" style="background: linear-gradient(145deg, #d1c4e9, #b39ddb); bottom: 145px; left: 85%;">💌</div>
+            
+            <div class="prize-collection" id="prizeCollection">
+                <!-- Collected prizes will appear here -->
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-row">
+                <button class="control-btn" onclick="moveClaw('left')">⬅️ LEFT</button>
+                <button class="control-btn grab-btn" onclick="grabPrize()">GRAB</button>
+                <button class="control-btn" onclick="moveClaw('right')">➡️ RIGHT</button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+             Use the cute buttons to move the kawaii claw around!<br>
+            <small>✨ Keyboard: Left/Right arrows to move, Spacebar to grab messages ✨</small>
+        </div>
+        
+        <!-- Back Button -->
+        <div class="back-btn-container">
+            <a href="index.html" class="back-btn">⬅ Back</a>
+        </div>
+
+    </div>
+
+    <!-- Message Popup -->
+    <div class="overlay hidden" id="overlay"></div>
+    <div class="message-popup hidden" id="messagePopup">
+        <div class="message-text" id="messageText"></div>
+        <button class="close-btn" onclick="closeMessage()">💖 Close Message 💖</button>
+    </div>
+    
+
+    <script>
+        // Initialize claw position (will be set to center on load)
+        let clawPosition = { x: 0, y: 0 };
+        let isGrabbing = false;
+        let score = 0;
+        let grabbedPrize = null;
+
+        const clawContainer = document.getElementById('clawContainer');
+        const claw = document.getElementById('claw');
+        const prizeCollection = document.getElementById('prizeCollection');
+        const scoreCount = document.getElementById('scoreCount');
+
+        function moveClaw(direction) {
+            if (isGrabbing) return;
+
+            const step = 30;
+            const gameArea = document.querySelector('.game-area');
+            const maxX = gameArea.offsetWidth - 50;
+
+            switch(direction) {
+                case 'left':
+                    if (clawPosition.x > step) {
+                        clawPosition.x -= step;
+                    }
+                    break;
+                case 'right':
+                    if (clawPosition.x < maxX - step) {
+                        clawPosition.x += step;
+                    }
+                    break;
+            }
+
+            clawContainer.style.left = clawPosition.x + 'px';
+            clawContainer.style.top = clawPosition.y + 'px';
+        }
+
+        function grabPrize() {
+            if (isGrabbing) return;
+            
+            isGrabbing = true;
+            
+            // Store original position
+            const originalY = clawPosition.y;
+            
+            // Step 1: Drop claw down to bottom
+            const gameArea = document.querySelector('.game-area');
+            const dropY = gameArea.offsetHeight - 180;
+            clawPosition.y = dropY;
+            clawContainer.style.top = clawPosition.y + 'px';
+            clawContainer.style.transition = 'all 0.8s ease-in';
+            
+            setTimeout(() => {
+                // Step 2: Close claw and check for prizes
+                claw.classList.add('grabbing');
+                
+                const prizes = document.querySelectorAll('.prize:not(.grabbed)');
+                let caughtPrize = null;
+
+                prizes.forEach(prize => {
+                    const prizeRect = prize.getBoundingClientRect();
+                    const clawRect = claw.getBoundingClientRect();
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(prizeRect.left - clawRect.left, 2) + 
+                        Math.pow(prizeRect.top - clawRect.top, 2)
+                    );
+
+                    if (distance < 70) {
+                        caughtPrize = prize;
+                    }
+                });
+                
+                if (caughtPrize) {
+                    caughtPrize.classList.add('grabbed');
+                    grabbedPrize = caughtPrize;
+                    
+                    // Move prize to claw position
+                    caughtPrize.style.left = (clawPosition.x + 10) + 'px';
+                    caughtPrize.style.bottom = 'auto';
+                    caughtPrize.style.top = (clawPosition.y + 100) + 'px';
+                    caughtPrize.style.transition = 'all 0.8s ease-out';
+                }
+                
+                setTimeout(() => {
+                    // Step 3: Lift claw back up
+                    clawPosition.y = originalY;
+                    clawContainer.style.top = clawPosition.y + 'px';
+                    clawContainer.style.transition = 'all 0.8s ease-out';
+                    
+                    if (caughtPrize) {
+                        // Move prize with claw
+                        caughtPrize.style.top = (clawPosition.y + 100) + 'px';
+                    }
+                    
+                    setTimeout(() => {
+                        if (caughtPrize) {
+                            // Move to collection area
+                            movePrizeToCollection(caughtPrize);
+                        } else {
+                            // No prize caught, just reset
+                            resetClaw();
+                        }
+                    }, 800);
+                }, 600);
+            }, 800);
+        }
+
+        function movePrizeToCollection(prize) {
+            // Get the message from the envelope
+            const message = prize.getAttribute('data-message');
+            
+            // Show the message popup
+            showMessage(message);
+            
+            // Add to collection
+            const collectedPrize = document.createElement('div');
+            collectedPrize.className = 'collected-prize';
+            collectedPrize.style.background = prize.style.background;
+            collectedPrize.textContent = prize.textContent;
+            collectedPrize.setAttribute('data-message', message);
+            collectedPrize.style.cursor = 'pointer';
+            collectedPrize.title = 'Click to read message again!';
+            collectedPrize.onclick = function() {
+                showMessage(message);
+            };
+            prizeCollection.appendChild(collectedPrize);
+            
+            // Remove from game area
+            prize.remove();
+            
+            // Update score
+            score++;
+            scoreCount.textContent = score;
+            
+            // Reset claw
+            setTimeout(() => {
+                resetClaw();
+            }, 500);
+        }
+
+        function showMessage(message) {
+            const messagePopup = document.getElementById('messagePopup');
+            const messageText = document.getElementById('messageText');
+            const overlay = document.getElementById('overlay');
+            
+            messageText.textContent = message;
+            messagePopup.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        }
+
+        function closeMessage() {
+            const messagePopup = document.getElementById('messagePopup');
+            const overlay = document.getElementById('overlay');
+            
+            messagePopup.classList.add('hidden');
+            overlay.classList.add('hidden');
+        }
+
+        function resetClaw() {
+            isGrabbing = false;
+            grabbedPrize = null;
+            claw.classList.remove('grabbing');
+            
+            // Reset transition for smooth movement
+            clawContainer.style.transition = 'all 0.3s ease';
+            
+            // Move claw back to starting position (center of game area)
+            const gameArea = document.querySelector('.game-area');
+            const centerX = (gameArea.offsetWidth / 2) - 25;
+            clawPosition = { x: centerX, y: 0 };
+            clawContainer.style.left = clawPosition.x + 'px';
+            clawContainer.style.top = clawPosition.y + 'px';
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    moveClaw('left');
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    moveClaw('right');
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    grabPrize();
+                    break;
+            }
+        });
+
+        // Initialize game on load
+        window.addEventListener('load', () => {
+            const gameArea = document.querySelector('.game-area');
+            const centerX = (gameArea.offsetWidth / 2) - 25;
+            clawPosition = { x: centerX, y: 0 };
+            clawContainer.style.left = clawPosition.x + 'px';
+            clawContainer.style.top = clawPosition.y + 'px';
+        });
+
+        // Add some physics to prizes (gentle floating)
+        setInterval(() => {
+            const prizes = document.querySelectorAll('.prize:not(.grabbed)');
+            prizes.forEach((prize, index) => {
+                const currentBottom = parseInt(prize.style.bottom) || 80;
+                const wobble = Math.sin(Date.now() * 0.002 + index) * 3;
+                prize.style.bottom = (currentBottom + wobble) + 'px';
+                
+                // Add gentle rotation
+                const rotation = Math.sin(Date.now() * 0.001 + index) * 5;
+                prize.style.transform = `rotate(${rotation}deg)`;
+            });
+        }, 50);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'969e914840b4454d',t:'MTc1NDMxNTg4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

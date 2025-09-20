@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Love Letter Animation</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Hind', sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(to bottom right, #e0e0e0, #f5f5f5);
+    }
+
+    .heart {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      transition: transform 2s;
+      z-index: 1;
+    }
+
+    .heart > img {
+      width: 50px;
+      height: auto;
+      cursor: pointer;
+      filter: grayscale(100%) contrast(120%);
+    }
+
+    .heart > img:hover {
+      animation: beat 2s ease-in-out infinite;
+    }
+
+    .message {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 500px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 0 20px;
+      overflow-y: auto;
+      max-height: 0;
+      opacity: 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.2);
+      z-index: 0;
+      transition: all 1s ease;
+      color: #222;
+      text-align: left;
+    }
+
+    .message.openNor {
+      max-height: 80vh;
+      padding: 20px;
+      opacity: 1;
+    }
+
+    h1 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #111;
+    }
+
+    p {
+      text-indent: 30px;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      color: #333;
+    }
+
+    /* Back button */
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 18px;
+      background-color: #333;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: #555;
+      transform: translateY(-2px);
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.2); }
+      50% { transform: scale(0.9); }
+      75% { transform: scale(1.1); }
+    }
+
+    @keyframes heartMove {
+      0% { top: 50%; }
+      100% { top: 90%; transform: translate(-50%, 0); }
+    }
+
+    .openHer {
+      animation-name: heartMove;
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+    }
+
+    .closeHer {
+      animation-name: heartMove;
+      animation-duration: 2s;
+      animation-direction: reverse;
+      animation-fill-mode: forwards;
+    }
+
+    .closed {
+      display: none;
+    }
+
+    .beating > img {
+      animation: beat 2s ease-in-out infinite;
+    }
+
+    .openedHer {
+      top: 90%;
+      transform: translate(-50%, 0);
+    }
+
+    audio {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .message {
+        max-width: 90%;
+        font-size: 0.9rem;
+      }
+
+      h1 {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <input id="messageState" type="checkbox" style="display:none"/>
+    <label for="messageState">
+      <div class="heart">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Love_Heart_SVG.svg" alt="Heart" />
+      </div>
+    </label>
+    <div class="message">
+      <h1>Happy 5th Monthsary, my baby! 🖤</h1>
+      <p>
+        Five months. What a journey it’s been, full of highs, challenges, and everything in between. Through it all, I keep finding myself falling deeper for you every day. I can honestly say I love you more than ever. Thank you for being you.
+        
+        Lately, I’ve felt a little bit of distance between us. Not in a way that makes me love you any less, but in a way that reminds me how much I cherish your warmth and energy. Thank you for being so strong, for holding on, and for moving forward even when things get tough. I admire you more than words can say, and I’m grateful to have you by my side.
+        
+        I can’t believe it. In our first month together baby pa si wo ai ni, now she’s a big girl na. Thank you for raising her with me. 
+        
+        I hope we keep choosing each other, through every high and low, and face whatever comes together. Wherever this leads us, may we both find peace, happiness, and love.
+        
+        - ♡</p>
+
+      <!-- Back button -->
+      <a href="index.html" class="back-btn">← Back</a>
+    </div>
+    <audio id="bgMusic" src="./songs/bestpart.mp3"></audio>
+  </div>
+
+  <script>
+    const audio = document.getElementById("bgMusic");
+
+    $("#messageState").on("change", () => {
+      const isChecked = $("#messageState").is(":checked");
+
+      $(".message").toggleClass("openNor", isChecked);
+      $(".heart").removeClass("openHer closeHer openedHer beating");
+
+      if (isChecked) {
+        $(".heart").addClass("openHer");
+        $(".container").css("background", "linear-gradient(to bottom right, #d9d9d9, #f2f2f2)");
+        audio.play();
+      } else {
+        $(".heart").addClass("closeHer");
+        $(".container").css("background", "linear-gradient(to bottom right, #f2f2f2, #e6e6e6)");
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    });
+
+    $(".heart").on('animationend webkitAnimationEnd oanimationend msAnimationEnd', function () {
+      if (!$(".heart").hasClass("closeHer")) {
+        $(".heart").addClass("openedHer beating");
+      } else {
+        $(".heart").removeClass("beating openedHer");
+      }
+      $(".heart").removeClass("openHer closeHer");
+    });
+  </script>
+</body>
+</html>
